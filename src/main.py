@@ -1,24 +1,36 @@
+import os
+import random
+from time import sleep
 from gerador_dados import gerar_dados_csv, gerar_dados_json, gerar_dados_txt
-import ler_dados
-import load_sql
-import obter_conexao
-import gravar_dados
-from datetime import time, timedelta
+from gravar_dados import gravar_dados  # Função consolidada que faz a inserção no banco
 
-while True:
-    print("Iniciando processo ETL...")
+def main():
+    # Diretório onde os arquivos serão salvos
+    diretorio_dados = 'data'
 
-    arquivo_json = 'dados.json'
-    arquivo_csv = 'dados.csv'
-    arquivo_txt = 'dados.txt'
+    # Garante que a pasta de saída 'data' existe
+    os.makedirs(diretorio_dados, exist_ok=True)
 
-    gerar_dados_json(100, arquivo_json)
-    gerar_dados_csv(100, arquivo_csv)
-    gerar_dados_txt(100, arquivo_txt)
+    while True:
+        print("Iniciando processo ETL...")
 
-    dados_consolidados = ler_dados(arquivo_json, arquivo_csv, arquivo_txt)
+        # Definir caminhos para os arquivos de dados
+        arquivo_json = os.path.join(diretorio_dados, 'dados.json')
+        arquivo_csv = os.path.join(diretorio_dados, 'dados_produtos.csv')
+        arquivo_txt = os.path.join(diretorio_dados, 'dados_transacoes.txt')
 
-    gravar_dados(dados_consolidados, 'mongodb://localhost:27017/', 'meu_banco', 'minha_colecao')
+        # Geração de dados
+        gerar_dados_json(random.randrange(1,150), arquivo_json)
+        gerar_dados_csv(random.randrange(1,150), arquivo_csv)
+        gerar_dados_txt(random.randrange(1,150), arquivo_txt)
 
-    print("Processo ETL finalizado. Aguardando 1 minuto...")
-    time.sleep(60)
+        # Inserção dos dados no banco
+        gravar_dados(arquivo_json, 'json')
+        gravar_dados(arquivo_csv, 'csv')
+        gravar_dados(arquivo_txt, 'txt')
+
+        print("Processo ETL finalizado. Aguardando 1 minuto...")
+        sleep(60)
+
+if __name__ == "__main__":
+    main()
