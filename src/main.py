@@ -26,11 +26,11 @@ def main():
         gerar_dados_produto(random.randint(1, 100), arquivo_json_produto)
 
         # Inserir dados no banco de dados
-        gravar_dados(arquivo_json_promocao, 'json', 'tabela_promocao')
-        gravar_dados(arquivo_csv_vendas, 'csv', 'tabela_vendas')
-        gravar_dados(arquivo_txt_clientes, 'txt', 'tabela_clientes')
-        gravar_dados(arquivo_csv_filial, 'csv', 'tabela_filial')
-        gravar_dados(arquivo_json_produto, 'json', 'tabela_produto')
+        gravar_dados(arquivo_json_promocao, 'json', 'promocao')
+        gravar_dados(arquivo_csv_vendas, 'csv', 'vendas')
+        gravar_dados(arquivo_txt_clientes, 'txt', 'clientes')
+        gravar_dados(arquivo_csv_filial, 'csv', 'filial')
+        gravar_dados(arquivo_json_produto, 'json', 'produto')
 
         print("Processo ETL finalizado. Aguardando 1 minuto...")
         sleep(60)
